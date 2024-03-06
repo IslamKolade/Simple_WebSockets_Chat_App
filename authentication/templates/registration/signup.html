@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <h2>Sign Up </h2>
+    <form method="post">
+        {% csrf_token %}
+    <p>
+    <label for="id_username">Username:</label>
+    <input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus required id="id_username">    
+    </p>
+    <label for="id_email">Email:</label>
+    <input type="email" name="email" maxlength="150" autocapitalize="none" autocomplete="email" autofocus required id="id_email">
+
+    <p>
+    <label for="id_password1">Password:</label>
+    <input type="password" name="password1" autocomplete="new-password" required id="id_password1">
+    
+    </p>
+ 
+    <p>
+    <label for="id_password2">Password confirmation:</label>
+    <input type="password" name="password2" autocomplete="new-password" required id="id_password2">
+    </p>
+    <button type="submit">Sign Up</button>
+    <div style="color: red;">{{form.errors}}</div>
+    </form>
+</body>
+</html>

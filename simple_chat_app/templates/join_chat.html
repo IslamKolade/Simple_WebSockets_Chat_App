@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Chat</title>
+</head>
+<body>
+    <h1 class="title">Join Chat</h1>
+    <form method="GET">
+        <label>Chat Name</label>
+        <input type="text" name="chat_name" maxlength="100" autocomplete="off" spellcheck="false" placeholder="Chat Name" required>
+       
+        <br>
+        {% if messages %}
+            {% for message in messages %}
+            <small style="color:red;">
+                *{{ message }}
+            </small>
+            {% endfor %}
+        {% endif %}
+        
+        <button type="submit">Join Chat</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat Messages</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<h1 class="chat-name" id="chat_name_1">{{ chat.chat_name }}</h1>
+
+<br>
+
+<!--Chat Messages-->
+<div class="msger">
+  <p class="chat-date-started">
+    chat created on {{chat.created_at|date}}
+  </p>
+  <main class="msger-chat">
+    <div id="chat-messages">
+      {% for message in messages %}
+      <div>{{message.sender}}:- {{message.message}}</div>
+      {% endfor %}
+    </div>
+  </main>
+</div>
+<!--Message Form-->
+<form class="msger-inputarea" id="message-form" style="position: fixed; bottom: 0;">
+  {% csrf_token %}
+  <textarea name="message" id="message" class="msger-input" placeholder="Message" required></textarea>
+  <button class="msger-send-btn" type="submit" id="submitButton">
+    Send
+  </button>
+</form>
+
+<!--WS Chat Messsages Streaming-->
+<script>
+  function startWS() {
+    var socket = new WebSocket('ws://' + window.location.host + '/ws/chat_messages/{{ chat.url }}/');
+
+    socket.onmessage = (event) => {
+      const response = JSON.parse(event.data);
+      const chat_messages = response.messages;
+      
+      function renderChatMessages(chatMessages) {
+        for (var p = 0; p < chatMessages.length; p++) {
+          const message = chatMessages[p];
+          var temp = "";
+          temp += `<div>${message.sender}:- ${message.message}</div>`;
+          $("#chat-messages").append(temp);
+        }
+      }
+      $("#chat-messages").empty();
+      renderChatMessages(chat_messages);
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    startWS();
+  });
+</script>
+
+<!--AJAX Message Sending-->
+<script type="text/javascript">
+  $('#message-form').on('submit', function (e) {
+    e.preventDefault();
+    $('#submitButton').prop('disabled', true);
+
+    const textarea = document.getElementById('message');
+    const message = textarea.value.trim();
+    var sendBtn = $('#send-btn');
+    $.ajax({
+      type: 'POST',
+      url: "{% url 'chat_messages' chat.url %}",
+      data: {
+        message: $('#message').val(),
+        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+      },
+      dataType: 'json',
+      success: function (data) {
+        $('#message').val('');
+        $('#submitButton').prop('disabled', false);
+      },
+      error: function(error) {   
+        $('#submitButton').prop('disabled', false);     
+      },
+    });
+  });
+</script>
+
+</body>
+</html>

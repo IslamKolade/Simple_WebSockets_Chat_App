@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Group</title>
+</head>
+<body>
+    <h1 class="title">Join Group</h1>
+    <form method="GET">
+        {% csrf_token %}
+        <label>Group Name</label>
+        <input type="text" name="group_name" maxlength="100" autocomplete="off" spellcheck="false" placeholder="Group Name" required>
+       
+        <br>
+        {% if messages %}
+            {% for message in messages %}
+            <small style="color:red;">
+                *{{ message }}
+            </small>
+            {% endfor %}
+        {% endif %}
+        
+        <button type="submit">Join Group</button>
+    </form>
+</body>
+</html>
