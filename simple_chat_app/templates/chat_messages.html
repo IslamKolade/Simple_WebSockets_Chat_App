@@ -36,7 +36,7 @@
 <!--WS Chat Messsages Streaming-->
 <script>
   function startWS() {
-    var socket = new WebSocket('ws://' + window.location.host + '/ws/chat_messages/{{ chat.url }}/');
+    var socket = new WebSocket('wss://' + window.location.host + '/ws/chat_messages/{{ chat.url }}/');
 
     socket.onmessage = (event) => {
       const response = JSON.parse(event.data);

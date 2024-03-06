@@ -37,7 +37,7 @@
 <script>
   let initialized = false
   function startWS() {
-    var socket = new WebSocket('ws://' + window.location.host + '/ws/group_chat_messages/{{ group.url }}/');
+    var socket = new WebSocket('wss://' + window.location.host + '/ws/group_chat_messages/{{ group.url }}/');
 
     socket.onmessage = (event) => {
       const response = JSON.parse(event.data);
